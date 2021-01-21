@@ -1,0 +1,315 @@
+swagger: '2.0'
+info:
+  description: API contact management
+  title: API contact management
+  version: v0.1
+paths:
+  '/contact':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - description: contact to add
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Contact'
+      responses:
+        '201':
+          description: Created
+        '404':
+          description: Not found
+      tags:
+        - contactManagement
+      operationId: createContact
+      summary: create contact
+
+  '/contact/{contactId}':
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - format: int64
+          in: path
+          name: contactId
+          required: true
+          type: integer
+        - description: new contact details
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Contact'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Contact'
+        '404':
+          description: Not found
+      tags:
+        - contactManagement
+      operationId: updateContact
+      summary: update contact
+
+    delete:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - format: int64
+          in: path
+          name: contactId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+        '404':
+          description: Not found
+      tags:
+        - contactManagement
+      operationId: deleteContact
+      summary: delete a contact of a company
+
+  '/company':
+    get:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Ok
+          schema:
+            items:
+              $ref: '#/definitions/Company'
+            type: array
+      tags:
+        - contactManagement
+      operationId: getCompanies
+      summary: Return list of a companies
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - description: company to add
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Company'
+      responses:
+        '201':
+          description: Created
+      tags:
+        - contactManagement
+      operationId: createCompany
+      summary: create a company
+
+  '/company/{companyId}':
+    patch:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - format: int64
+          in: path
+          name: companyId
+          required: true
+          type: integer
+        - description: new company details
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Company'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Company'
+        '404':
+          description: Not found
+      tags:
+        - contactManagement
+      operationId: patchCompanyDetails
+      summary: update a company details except the addresses
+
+  '/company/{companyId}/address/main':
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - format: int64
+          in: path
+          name: companyId
+          required: true
+          type: integer
+        - description: new address
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Address'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Company'
+        '404':
+          description: Not found
+      tags:
+        - contactManagement
+      operationId: updateCompanyMainAddress
+      summary: update company main address
+
+  '/company/{companyId}/address/other':
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - format: int64
+          in: path
+          name: companyId
+          required: true
+          type: integer
+        - description: address to add
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Address'
+      responses:
+        '201':
+          description: Created
+        '404':
+          description: Not found
+      tags:
+        - contactManagement
+      operationId: createCompanyOtherAddress
+      summary: create company other address
+
+  '/company/{companyId}/address/other/{addressId}':
+    put:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - format: int64
+          in: path
+          name: companyId
+          required: true
+          type: integer
+        - format: int64
+          in: path
+          name: addressId
+          required: true
+          type: integer
+        - description: new address
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Address'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Company'
+        '404':
+          description: Not found
+      tags:
+        - contactManagement
+      operationId: updateCompanyOtherAddress
+      summary: update company other address
+
+  '/company/{companyId}/contact/{contactId}':
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - format: int64
+          in: path
+          name: companyId
+          required: true
+          type: integer
+        - format: int64
+          in: path
+          name: contactId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/Company'
+        '404':
+          description: Not found
+      tags:
+        - contactManagement
+      operationId: addContactToCompany
+      summary: addContactToCompany
+
+
+definitions:
+
+  Address:
+    properties:
+      id:
+        format: int64
+        type: integer      
+      street:
+        type: string
+      number:
+        format: int32
+        type: integer
+      postalCode:
+        format: int32
+        type: integer
+      country:
+        type: string
+    type: object
+
+  Contact:
+    properties:
+      id:
+        format: int64
+        type: integer
+      firstname:
+        type: string
+      lastname:
+        type: string
+      address:
+        $ref: '#/definitions/Address'
+      status:
+        type: string
+        enum: ["EMPLOYE","FREELANCE"]
+      tva:
+        type: string
+    type: object
+    required:
+      - type
+
+  Company:
+    properties:
+      id:
+        format: int64
+        type: integer
+      tva:
+        type: string
+      mainAddress:
+        $ref: '#/definitions/Address'
+      otherAddress:
+        type: array
+        items:
+          $ref: '#/definitions/Address'
+    type: object

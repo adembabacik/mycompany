@@ -1,0 +1,15 @@
+integration-test:
+  base-url: https://fps-socsec-01-test.paas.gcloud.belgium.be
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://pgaas-112035.cloud.nuvem.intra:2001/db-tria-tst
+    username: db-tria-tst_prd
+    password: YjE5MWM4MmQtNTg4
+    driverClassName: org.postgresql.Driver

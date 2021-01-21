@@ -1,0 +1,15 @@
+integration-test:
+  base-url: http://localhost:8080
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:2001/tria-db
+    username: tria-user
+    password: tria-password
+    driverClassName: org.postgresql.Driver
